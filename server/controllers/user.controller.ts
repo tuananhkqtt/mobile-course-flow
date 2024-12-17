@@ -1,20 +1,20 @@
 require("dotenv").config();
-import e, { Request, Response, NextFunction } from "express";
-import userModel, { IUser } from "../models/user.model";
-import ErrorHandler from "../utils/ErrorHandler";
-import { CatchAsyncError } from "../middleware/catchAsyncErrors";
-import jwt, { JwtPayload, Secret } from "jsonwebtoken";
+import cloudinary from "cloudinary";
 import ejs from "ejs";
+import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import path from "path";
-import sendMail from "../utils/sendMail";
-import { sendToken } from "../utils/jwt";
-import { redis } from "../utils/redis";
+import { CatchAsyncError } from "../middleware/catchAsyncErrors";
+import userModel, { IUser } from "../models/user.model";
 import {
   getAllUsersService,
   getUserById,
   updateUserRoleService,
 } from "../services/user.service";
-import cloudinary from "cloudinary";
+import ErrorHandler from "../utils/ErrorHandler";
+import { sendToken } from "../utils/jwt";
+import { redis } from "../utils/redis";
+import sendMail from "../utils/sendMail";
 
 // register user
 interface IRegistrationBody {
@@ -191,31 +191,25 @@ export const logoutUser = CatchAsyncError(
 export const updateAccessToken = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const refresh_token = req.headers["refresh-token"] as string;
+      const refresh_token = req.body["refreshToken"] as string;
       const decoded = jwt.verify(
         refresh_token,
         process.env.REFRESH_TOKEN as string
       ) as JwtPayload;
-
       const message = "Could not refresh token";
       if (!decoded) {
         return next(new ErrorHandler(message, 400));
       }
-      const session = await redis.get(decoded.id as string);
 
-      if (!session) {
-        return next(
-          new ErrorHandler("Please login for access this resources!", 400)
-        );
+      const user = await userModel.findOne({ _id: decoded.id as string }).select("+password");
+
+      if (!user || !user.id) {
+        return next(new ErrorHandler(message, 400));
       }
-
-      const user = JSON.parse(session);
-
-      req.user = user;
 
       await redis.set(user._id, JSON.stringify(user), "EX", 604800); // 7days
 
-      return next();
+      sendToken(user, 200, res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }

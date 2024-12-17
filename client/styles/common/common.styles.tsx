@@ -1,11 +1,9 @@
 import { StyleSheet } from "react-native";
 import {
-  responsiveHeight,
-  responsiveWidth,
+  responsiveWidth
 } from "react-native-responsive-dimensions";
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+  heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 
 export const commonStyles = StyleSheet.create({
@@ -57,7 +55,7 @@ export const commonStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 16,
-    position: "absolute",
-    top: 60,
+    // position: "absolute",
+    // top: 60,
   },
 });

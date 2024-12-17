@@ -1,21 +1,20 @@
-import { SERVER_URI } from "@/utils/uri";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import {
-  useFonts,
-  Raleway_700Bold,
-  Raleway_600SemiBold,
-} from "@expo-google-fonts/raleway";
+import CourseCard from "@/components/cards/course.card";
+import Loader from "@/components/loader/loader";
+import apiClient from '@/middleware/api';
 import {
   Nunito_400Regular,
-  Nunito_700Bold,
   Nunito_500Medium,
   Nunito_600SemiBold,
+  Nunito_700Bold,
 } from "@expo-google-fonts/nunito";
-import Loader from "@/components/loader/loader";
+import {
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+  useFonts,
+} from "@expo-google-fonts/raleway";
 import { LinearGradient } from "expo-linear-gradient";
-import CourseCard from "@/components/cards/course.card";
+import { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function CoursesScreen() {
   const [courses, setCourses] = useState<CoursesType[]>([]);
@@ -25,8 +24,8 @@ export default function CoursesScreen() {
   const [activeCategory, setactiveCategory] = useState("All");
 
   useEffect(() => {
-    axios
-      .get(`${SERVER_URI}/get-layout/Categories`)
+    apiClient
+      .get(`/get-layout/Categories`)
       .then((res) => {
         setcategories(res.data.layout.categories);
         fetchCourses();
@@ -37,8 +36,8 @@ export default function CoursesScreen() {
   }, []);
 
   const fetchCourses = () => {
-    axios
-      .get(`${SERVER_URI}/get-courses`)
+    apiClient
+      .get(`/get-courses`)
       .then((res: any) => {
         setCourses(res.data.courses);
         setOriginalCourses(res.data.courses);

@@ -1,5 +1,5 @@
+import apiClient from '@/middleware/api';
 import { commonStyles } from "@/styles/common/common.styles";
-import { SERVER_URI } from "@/utils/uri";
 import {
   Nunito_400Regular,
   Nunito_500Medium,
@@ -19,9 +19,9 @@ import {
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
+import * as SecureStore from 'expo-secure-store';
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -61,49 +61,49 @@ export default function LoginScreen() {
   }
 
   const handlePasswordValidation = (value: string) => {
-    setUserInfo({ ...userInfo, password: value });
+    const password = value;
+    const passwordSpecialCharacter = /(?=.*[!@#$&*])/;
+    const passwordOneNumber = /(?=.*[0-9])/;
+    const passwordSixValue = /(?=.{6,})/;
 
-    // const password = value;
-    // const passwordSpecialCharacter = /(?=.*[!@#$&*])/;
-    // const passwordOneNumber = /(?=.*[0-9])/;
-    // const passwordSixValue = /(?=.{6,})/;
-
-    // if (!passwordSpecialCharacter.test(password)) {
-    //   setError({
-    //     ...error,
-    //     password: "Write at least one special character",
-    //   });
-    //   setUserInfo({ ...userInfo, password: "" });
-    // } else if (!passwordOneNumber.test(password)) {
-    //   setError({
-    //     ...error,
-    //     password: "Write at least one number",
-    //   });
-    //   setUserInfo({ ...userInfo, password: "" });
-    // } else if (!passwordSixValue.test(password)) {
-    //   setError({
-    //     ...error,
-    //     password: "Write at least 6 characters",
-    //   });
-    //   setUserInfo({ ...userInfo, password: "" });
-    // } else {
-    //   setError({
-    //     ...error,
-    //     password: "",
-    //   });
-    //   setUserInfo({ ...userInfo, password: value });
-    // }
+    if (!passwordSpecialCharacter.test(password)) {
+      setError({
+        ...error,
+        password: "Write at least one special character",
+      });
+      setUserInfo({ ...userInfo, password: "" });
+    } else if (!passwordOneNumber.test(password)) {
+      setError({
+        ...error,
+        password: "Write at least one number",
+      });
+      setUserInfo({ ...userInfo, password: "" });
+    } else if (!passwordSixValue.test(password)) {
+      setError({
+        ...error,
+        password: "Write at least 6 characters",
+      });
+      setUserInfo({ ...userInfo, password: "" });
+    } else {
+      setError({
+        ...error,
+        password: "",
+      });
+      setUserInfo({ ...userInfo, password: value });
+    }
   };
 
   const handleSignIn = async () => {
-    await axios
-      .post(`${SERVER_URI}/login`, {
+    await apiClient
+      .post(`/login`, {
         email: userInfo.email,
         password: userInfo.password,
       })
       .then(async (res) => {
+
         await AsyncStorage.setItem("access_token", res.data.accessToken);
-        await AsyncStorage.setItem("refresh_token", res.data.refreshToken);
+        await saveRefreshToken(res.data.refreshToken)
+
         router.push("/(tabs)");
       })
       .catch((error) => {
@@ -112,6 +112,15 @@ export default function LoginScreen() {
           type: "danger",
         });
       });
+  };
+
+  const saveRefreshToken = async (token: string) => {
+    try {
+      await SecureStore.setItemAsync('refresh_token', token);
+      console.log('Refresh Token đã được lưu');
+    } catch (error) {
+      console.error('Lỗi khi lưu Refresh Token:', error);
+    }
   };
 
   return (
@@ -183,7 +192,7 @@ export default function LoginScreen() {
               />
             </View>
             {error.password && (
-              <View style={[commonStyles.errorContainer, { top: 145 }]}>
+              <View style={[commonStyles.errorContainer, { top: 5 }]}>
                 <Entypo name="cross" size={18} color={"red"} />
                 <Text style={{ color: "red", fontSize: 11, marginTop: -1 }}>
                   {error.password}

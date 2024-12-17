@@ -1,8 +1,7 @@
 import CourseCard from "@/components/cards/course.card";
 import Loader from "@/components/loader/loader";
 import useUser from "@/hooks/auth/useUser";
-import { SERVER_URI } from "@/utils/uri";
-import axios from "axios";
+import apiClient from '@/middleware/api';
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
@@ -13,7 +12,7 @@ export default function index() {
   const { loading, user } = useUser();
 
   useEffect(() => {
-    axios.get(`${SERVER_URI}/get-courses`).then((res: any) => {
+    apiClient.get(`/get-courses`).then((res: any) => {
       const courses: CoursesType[] = res.data.courses;
       const data = courses.filter((i: CoursesType) =>
         user?.courses?.some((d: any) => d._id === i._id)

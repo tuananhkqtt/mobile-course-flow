@@ -1,8 +1,7 @@
-import { SERVER_URI } from "@/utils/uri";
+import apiClient from '@/middleware/api';
 import { Entypo, FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useStripe } from "@stripe/stripe-react-native";
-import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
@@ -64,8 +63,8 @@ export default function CartScreen() {
         cartItems.reduce((total, item) => total + item.price, 0) * 100
       );
 
-      const paymentIntentResponse = await axios.post(
-        `${SERVER_URI}/payment`,
+      const paymentIntentResponse = await apiClient.post(
+        `/payment`,
         { amount },
         {
           headers: {
@@ -77,7 +76,7 @@ export default function CartScreen() {
       const { client_secret: clientSecret } = paymentIntentResponse.data;
 
       const initSheetResponse = await initPaymentSheet({
-        merchantDisplayName: "auth Private Ltd.",
+        merchantDisplayName: "Course Flow",
         paymentIntentClientSecret: clientSecret,
       })
 
@@ -107,9 +106,9 @@ export default function CartScreen() {
     const accessToken = await AsyncStorage.getItem("access_token");
     const refreshToken = await AsyncStorage.getItem("refresh_token");
 
-    await axios
+    await apiClient
       .post(
-        `${SERVER_URI}/create-mobile-order`,
+        `/create-mobile-order`,
         {
           courseId: cartItems[0]._id,
           payment_info: paymentResponse || {},

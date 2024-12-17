@@ -1,13 +1,15 @@
+import { commonStyles } from "@/styles/common/common.styles";
 import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+  Nunito_400Regular,
+  Nunito_500Medium,
+  Nunito_600SemiBold,
+  Nunito_700Bold,
+} from "@expo-google-fonts/nunito";
+import {
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+  useFonts,
+} from "@expo-google-fonts/raleway";
 import {
   AntDesign,
   Entypo,
@@ -16,26 +18,24 @@ import {
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  useFonts,
-  Raleway_700Bold,
-  Raleway_600SemiBold,
-} from "@expo-google-fonts/raleway";
-import {
-  Nunito_400Regular,
-  Nunito_500Medium,
-  Nunito_700Bold,
-  Nunito_600SemiBold,
-} from "@expo-google-fonts/nunito";
-import { useState } from "react";
-import { commonStyles } from "@/styles/common/common.styles";
-import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import axios from "axios";
-import { SERVER_URI } from "@/utils/uri";
 import { Toast } from "react-native-toast-notifications";
+
+import apiClient from '@/middleware/api';
 
 export default function SignUpScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -98,8 +98,8 @@ export default function SignUpScreen() {
 
   const handleSignIn = async () => {
     setButtonSpinner(true);
-    await axios
-      .post(`${SERVER_URI}/registration`, {
+    await apiClient
+      .post(`/registration`, {
         name: userInfo.name,
         email: userInfo.email,
         password: userInfo.password,
@@ -214,7 +214,7 @@ export default function SignUpScreen() {
               />
             </View>
             {error.password && (
-              <View style={[commonStyles.errorContainer, { top: 145 }]}>
+              <View style={[commonStyles.errorContainer, { top: 5 }]}>
                 <Entypo name="cross" size={18} color={"red"} />
                 <Text style={{ color: "red", fontSize: 11, marginTop: -1 }}>
                   {error.password}

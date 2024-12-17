@@ -1,6 +1,5 @@
-import { SERVER_URI } from "@/utils/uri";
+import apiClient from '@/middleware/api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function useUser() {
@@ -14,8 +13,8 @@ export default function useUser() {
       const accessToken = await AsyncStorage.getItem("access_token");
       const refreshToken = await AsyncStorage.getItem("refresh_token");
 
-      await axios
-        .get(`${SERVER_URI}/me`, {
+      await apiClient
+        .get(`/me`, {
           headers: {
             "access-token": accessToken,
             "refresh-token": refreshToken,

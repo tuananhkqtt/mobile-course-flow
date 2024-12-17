@@ -1,14 +1,15 @@
-import { Request, Response, NextFunction } from "express";
-import { CatchAsyncError } from "./catchAsyncErrors";
-import ErrorHandler from "../utils/ErrorHandler";
+import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { redis } from "../utils/redis";
 import { updateAccessToken } from "../controllers/user.controller";
+import ErrorHandler from "../utils/ErrorHandler";
+import { redis } from "../utils/redis";
+import { CatchAsyncError } from "./catchAsyncErrors";
 
 // authenticated user
 export const isAutheticated = CatchAsyncError(
   async (req: Request, res: Response, next: NextFunction) => {
-    const access_token = req.headers["access-token"] as string;
+    const authorizationHeader = req.headers["authorization"] as string;
+    const access_token = authorizationHeader?.split(' ')[1];
     if (!access_token) {
       return next(
         new ErrorHandler("Please login to access this resource", 400)
@@ -16,7 +17,7 @@ export const isAutheticated = CatchAsyncError(
     }
     const decoded = jwt.decode(access_token) as JwtPayload
     if (!decoded) {
-      return next(new ErrorHandler("access token is not valid", 400));
+      return next(new ErrorHandler("access token is not valid", 401));
     }
 
     // check if the access token is expired

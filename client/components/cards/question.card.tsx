@@ -1,16 +1,15 @@
-import { SERVER_URI } from "@/utils/uri";
+import apiClient from '@/middleware/api';
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 import { useState } from "react";
 import {
-  View,
-  Text,
   Image,
-  TouchableOpacity,
   Modal,
-  TextInput,
   StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
@@ -33,9 +32,9 @@ export default function QuestionsCard({
     const accessToken = await AsyncStorage.getItem("access_token");
     const refreshToken = await AsyncStorage.getItem("refresh_token");
 
-    await axios
+    await apiClient
       .put(
-        `${SERVER_URI}/add-answer`,
+        `/add-answer`,
         {
           answer: reply,
           courseId: courseData?._id,

@@ -1,30 +1,30 @@
 import Loader from "@/components/loader/loader";
 import useUser from "@/hooks/auth/useUser";
+import apiClient from '@/middleware/api';
+import {
+  Nunito_400Regular,
+  Nunito_600SemiBold,
+  Nunito_700Bold,
+} from "@expo-google-fonts/nunito";
+import {
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+  useFonts,
+} from "@expo-google-fonts/raleway";
 import {
   AntDesign,
   FontAwesome,
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import {
-  useFonts,
-  Raleway_600SemiBold,
-  Raleway_700Bold,
-} from "@expo-google-fonts/raleway";
-import {
-  Nunito_400Regular,
-  Nunito_600SemiBold,
-  Nunito_700Bold,
-} from "@expo-google-fonts/nunito";
-import { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import { SERVER_URI } from "@/utils/uri";
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
+import * as SecureStore from 'expo-secure-store';
+import { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileScreen() {
   const { user, loading, setRefetch } = useUser();
@@ -45,8 +45,17 @@ export default function ProfileScreen() {
 
   const logoutHandler = async () => {
     await AsyncStorage.removeItem("access_token");
-    await AsyncStorage.removeItem("refresh_token");
+    await deleteRefreshToken()
     router.push("/(routes)/login");
+  };
+
+  const deleteRefreshToken = async () => {
+    try {
+      await SecureStore.deleteItemAsync('refresh_token');
+      console.log('Đã đăng xuất và xóa refresh_token');
+    } catch (error) {
+      console.error('Lỗi khi xóa refreshToken:', error);
+    }
   };
 
   const pickImage = async () => {
@@ -69,8 +78,8 @@ export default function ProfileScreen() {
       const refreshToken = await AsyncStorage.getItem("refresh_token");
 
       try {
-        const response = await axios.put(
-          `${SERVER_URI}/update-user-avatar`,
+        const response = await apiClient.put(
+          `/update-user-avatar`,
           {
             avatar: base64Image,
           },

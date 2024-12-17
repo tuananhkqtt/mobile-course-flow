@@ -1,24 +1,24 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import Loader from "@/components/loader/loader";
-import { router, useLocalSearchParams } from "expo-router";
-import axios from "axios";
-import { SERVER_URI } from "@/utils/uri";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { WebView } from "react-native-webview";
-import { widthPercentageToDP } from "react-native-responsive-screen";
 import QuestionsCard from "@/components/cards/question.card";
-import { Toast } from "react-native-toast-notifications";
 import ReviewCard from "@/components/cards/review.card";
-import { FontAwesome } from "@expo/vector-icons";
+import Loader from "@/components/loader/loader";
 import useUser from "@/hooks/auth/useUser";
+import apiClient from '@/middleware/api';
+import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
+import { Toast } from "react-native-toast-notifications";
+import { WebView } from "react-native-webview";
 
 export default function CourseAccessScreen() {
   const [isLoading, setisLoading] = useState(true);
@@ -53,8 +53,8 @@ export default function CourseAccessScreen() {
   const fetchCourseContent = async () => {
     const accessToken = await AsyncStorage.getItem("access_token");
     const refreshToken = await AsyncStorage.getItem("refresh_token");
-    await axios
-      .get(`${SERVER_URI}/get-course-content/${data._id}`, {
+    await apiClient
+      .get(`/get-course-content/${data._id}`, {
         headers: {
           "access-token": accessToken,
           "refresh-token": refreshToken,
@@ -74,9 +74,9 @@ export default function CourseAccessScreen() {
     const accessToken = await AsyncStorage.getItem("access_token");
     const refreshToken = await AsyncStorage.getItem("refresh_token");
 
-    await axios
+    await apiClient
       .put(
-        `${SERVER_URI}/add-question`,
+        `/add-question`,
         {
           question: quesion,
           courseId: data?._id,
@@ -107,7 +107,7 @@ export default function CourseAccessScreen() {
 
     await axios
       .put(
-        `${SERVER_URI}/add-review/${data?._id}`,
+        `/add-review/${data?._id}`,
         {
           review,
           rating,

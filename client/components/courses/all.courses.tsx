@@ -1,24 +1,22 @@
+import CourseCard from "@/components/cards/course.card";
+import apiClient from '@/middleware/api';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Dimensions,
-} from "react-native";
-import {
-  useFonts,
-  Raleway_700Bold,
-  Raleway_600SemiBold,
-} from "@expo-google-fonts/raleway";
-import {
-  Nunito_600SemiBold,
   Nunito_500Medium,
+  Nunito_600SemiBold,
 } from "@expo-google-fonts/nunito";
+import {
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+  useFonts,
+} from "@expo-google-fonts/raleway";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { SERVER_URI } from "@/utils/uri";
-import CourseCard from "@/components/cards/course.card";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
 
 export default function AllCourses() {
   const [courses, setCourses] = useState<CoursesType[]>([]);
@@ -26,8 +24,8 @@ export default function AllCourses() {
   const flatListRef = useRef(null);
 
   useEffect(() => {
-    axios
-      .get(`${SERVER_URI}/get-courses`)
+    apiClient
+      .get(`/get-courses`)
       .then((res: any) => {
         setCourses(res.data.courses);
       })

@@ -74,20 +74,11 @@ export default function ProfileScreen() {
       const base64Image = `data:image/jpeg;base64,${base64}`;
       setImage(base64Image);
 
-      const accessToken = await AsyncStorage.getItem("access_token");
-      const refreshToken = await AsyncStorage.getItem("refresh_token");
-
       try {
         const response = await apiClient.put(
           `/update-user-avatar`,
           {
             avatar: base64Image,
-          },
-          {
-            headers: {
-              "access-token": accessToken,
-              "refresh-token": refreshToken,
-            },
           }
         );
         if (response.data) {

@@ -1,6 +1,5 @@
 import apiClient from '@/middleware/api';
 import { Ionicons } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 import {
   Image,
@@ -29,8 +28,6 @@ export default function QuestionsCard({
   const [showReplies, setshowReplies] = useState(false);
 
   const handleReplySubmit = async () => {
-    const accessToken = await AsyncStorage.getItem("access_token");
-    const refreshToken = await AsyncStorage.getItem("refresh_token");
 
     await apiClient
       .put(
@@ -40,12 +37,6 @@ export default function QuestionsCard({
           courseId: courseData?._id,
           contentId: contentId,
           questionId: item?._id,
-        },
-        {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
         }
       )
       .then((res) => {

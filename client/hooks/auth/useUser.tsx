@@ -1,5 +1,4 @@
 import apiClient from '@/middleware/api';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
 export default function useUser() {
@@ -10,16 +9,9 @@ export default function useUser() {
 
   useEffect(() => {
     const subscription = async () => {
-      const accessToken = await AsyncStorage.getItem("access_token");
-      const refreshToken = await AsyncStorage.getItem("refresh_token");
 
       await apiClient
-        .get(`/me`, {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
-        })
+        .get(`/me`)
         .then((res: any) => {
           setUser(res.data.user);
           setLoading(false);

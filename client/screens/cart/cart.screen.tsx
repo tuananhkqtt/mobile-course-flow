@@ -57,21 +57,13 @@ export default function CartScreen() {
 
   const handlePayment = async () => {
     try {
-      const accessToken = await AsyncStorage.getItem("access_token");
-      const refreshToken = await AsyncStorage.getItem("refresh_token");
       const amount = Math.round(
         cartItems.reduce((total, item) => total + item.price, 0) * 100
       );
 
       const paymentIntentResponse = await apiClient.post(
         `/payment`,
-        { amount },
-        {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
-        }
+        { amount }
       );
       const { client_secret: clientSecret } = paymentIntentResponse.data;
 
@@ -103,8 +95,6 @@ export default function CartScreen() {
   const createOrder = async (paymentResponse: any) => {
     console.log("paymentResponse", paymentResponse);
 
-    const accessToken = await AsyncStorage.getItem("access_token");
-    const refreshToken = await AsyncStorage.getItem("refresh_token");
 
     await apiClient
       .post(
@@ -112,12 +102,6 @@ export default function CartScreen() {
         {
           courseId: cartItems[0]._id,
           payment_info: paymentResponse || {},
-        },
-        {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
         }
       )
       .then((res) => {

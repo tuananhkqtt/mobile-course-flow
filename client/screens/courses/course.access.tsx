@@ -4,9 +4,9 @@ import Loader from "@/components/loader/loader";
 import useUser from "@/hooks/auth/useUser";
 import apiClient from '@/middleware/api';
 import { FontAwesome } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
+import { usePreventScreenCapture } from "expo-screen-capture";
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -37,6 +37,8 @@ export default function CourseAccessScreen() {
   const [review, setReview] = useState("");
   const [reviewAvailabe, setreviewAvailabe] = useState(false);
 
+  usePreventScreenCapture();
+
   useEffect(() => {
     const subscription = async () => {
       await fetchCourseContent();
@@ -51,15 +53,8 @@ export default function CourseAccessScreen() {
   }, []);
 
   const fetchCourseContent = async () => {
-    const accessToken = await AsyncStorage.getItem("access_token");
-    const refreshToken = await AsyncStorage.getItem("refresh_token");
     await apiClient
-      .get(`/get-course-content/${data._id}`, {
-        headers: {
-          "access-token": accessToken,
-          "refresh-token": refreshToken,
-        },
-      })
+      .get(`/get-course-content/${data._id}`)
       .then((res: any) => {
         setisLoading(false);
         setcourseContentData(res.data.content);
@@ -71,8 +66,6 @@ export default function CourseAccessScreen() {
   };
 
   const handleQuestionSubmit = async () => {
-    const accessToken = await AsyncStorage.getItem("access_token");
-    const refreshToken = await AsyncStorage.getItem("refresh_token");
 
     await apiClient
       .put(
@@ -81,12 +74,6 @@ export default function CourseAccessScreen() {
           question: quesion,
           courseId: data?._id,
           contentId: courseContentData[activeVideo]._id,
-        },
-        {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
         }
       )
       .then((res) => {
@@ -102,8 +89,6 @@ export default function CourseAccessScreen() {
   };
 
   const handleReviewSubmit = async () => {
-    const accessToken = await AsyncStorage.getItem("access_token");
-    const refreshToken = await AsyncStorage.getItem("refresh_token");
 
     await axios
       .put(
@@ -111,12 +96,6 @@ export default function CourseAccessScreen() {
         {
           review,
           rating,
-        },
-        {
-          headers: {
-            "access-token": accessToken,
-            "refresh-token": refreshToken,
-          },
         }
       )
       .then((res) => {

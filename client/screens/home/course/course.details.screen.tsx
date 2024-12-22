@@ -1,24 +1,24 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import {
-  useFonts,
-  Raleway_600SemiBold,
-  Raleway_700Bold,
-} from "@expo-google-fonts/raleway";
+import ReviewCard from "@/components/cards/review.card";
+import CourseLesson from "@/components/courses/course.lesson";
+import Loader from "@/components/loader/loader";
+import useUser from "@/hooks/auth/useUser";
 import {
   Nunito_400Regular,
   Nunito_500Medium,
-  Nunito_700Bold,
   Nunito_600SemiBold,
+  Nunito_700Bold,
 } from "@expo-google-fonts/nunito";
+import {
+  Raleway_600SemiBold,
+  Raleway_700Bold,
+  useFonts,
+} from "@expo-google-fonts/raleway";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
-import CourseLesson from "@/components/courses/course.lesson";
-import ReviewCard from "@/components/cards/review.card";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import useUser from "@/hooks/auth/useUser";
-import Loader from "@/components/loader/loader";
+import { LinearGradient } from "expo-linear-gradient";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function CourseDetailScreen() {
   const [activeButton, setActiveButton] = useState("About");
@@ -224,7 +224,7 @@ export default function CourseDetailScreen() {
               <TouchableOpacity
                 style={{
                   paddingVertical: 10,
-                  paddingHorizontal: 42,
+                  paddingHorizontal: 30,
                   backgroundColor:
                     activeButton === "About" ? "#2467EC" : "transparent",
                   borderRadius: activeButton === "About" ? 50 : 0,
@@ -243,7 +243,7 @@ export default function CourseDetailScreen() {
               <TouchableOpacity
                 style={{
                   paddingVertical: 10,
-                  paddingHorizontal: 42,
+                  paddingHorizontal: 30,
                   backgroundColor:
                     activeButton === "Lessons" ? "#2467EC" : "transparent",
                   borderRadius: activeButton === "Lessons" ? 50 : 0,
@@ -262,7 +262,7 @@ export default function CourseDetailScreen() {
               <TouchableOpacity
                 style={{
                   paddingVertical: 10,
-                  paddingHorizontal: 42,
+                  paddingHorizontal: 30,
                   backgroundColor:
                     activeButton === "Reviews" ? "#2467EC" : "transparent",
                   borderRadius: activeButton === "Reviews" ? 50 : 0,

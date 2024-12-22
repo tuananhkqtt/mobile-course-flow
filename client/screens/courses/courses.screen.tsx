@@ -63,12 +63,13 @@ export default function CoursesScreen() {
   }
 
   const handleCategories = (e: string) => {
+    console.log('originalCourses', originalCourses)
     setactiveCategory(e);
     if (e === "All") {
       setCourses(originalCourses);
     } else {
       const filterCourses = originalCourses.filter(
-        (i: CoursesType) => i.categories === e
+        (i: CoursesType) => i.categories?.toLowerCase()?.includes(e.toLowerCase())
       );
       setCourses(filterCourses);
     }
@@ -81,7 +82,7 @@ export default function CoursesScreen() {
       ) : (
         <LinearGradient
           colors={["#E5ECF9", "#F6F7F9"]}
-          style={{ flex: 1, paddingTop: 65 }}
+          style={{ flex: 1, paddingTop: 15 }}
         >
           <View style={{ padding: 10 }}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>

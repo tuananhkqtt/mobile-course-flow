@@ -185,7 +185,7 @@ export default function CourseAccessScreen() {
             <TouchableOpacity
               style={{
                 paddingVertical: 10,
-                paddingHorizontal: 42,
+                paddingHorizontal: 30,
                 backgroundColor:
                   activeButton === "About" ? "#2467EC" : "transparent",
                 borderRadius: activeButton === "About" ? 50 : 0,
@@ -204,7 +204,7 @@ export default function CourseAccessScreen() {
             <TouchableOpacity
               style={{
                 paddingVertical: 10,
-                paddingHorizontal: 42,
+                paddingHorizontal: 30,
                 backgroundColor:
                   activeButton === "Q&A" ? "#2467EC" : "transparent",
                 borderRadius: activeButton === "Q&A" ? 50 : 0,
@@ -223,7 +223,7 @@ export default function CourseAccessScreen() {
             <TouchableOpacity
               style={{
                 paddingVertical: 10,
-                paddingHorizontal: 42,
+                paddingHorizontal: 30,
                 backgroundColor:
                   activeButton === "Reviews" ? "#2467EC" : "transparent",
                 borderRadius: activeButton === "Reviews" ? 50 : 0,

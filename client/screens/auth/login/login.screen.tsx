@@ -101,6 +101,8 @@ export default function LoginScreen() {
       })
       .then(async (res) => {
 
+        await AsyncStorage.setItem("cart", '[]')
+
         await AsyncStorage.setItem("access_token", res.data.accessToken);
         await saveRefreshToken(res.data.refreshToken)
 
@@ -137,7 +139,7 @@ export default function LoginScreen() {
           Welcome Back!
         </Text>
         <Text style={styles.learningText}>
-          Login to your existing account of CourseFlow
+          Login to your CourseFlow account
         </Text>
         <View style={styles.inputContainer}>
           <View>

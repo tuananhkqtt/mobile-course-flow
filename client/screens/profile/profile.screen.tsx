@@ -44,6 +44,8 @@ export default function ProfileScreen() {
   }
 
   const logoutHandler = async () => {
+    await AsyncStorage.removeItem("cart")
+
     await AsyncStorage.removeItem("access_token");
     await deleteRefreshToken()
     router.push("/(routes)/login");

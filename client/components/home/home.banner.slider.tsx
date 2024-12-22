@@ -1,9 +1,9 @@
-import { View, Text, Image } from "react-native";
-import { useFonts, Raleway_700Bold } from "@expo-google-fonts/raleway";
-import { Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/nunito";
-import { styles } from "@/styles/home/banner.style";
-import Swiper from "react-native-swiper";
 import { bannerData } from "@/constants/constans";
+import { styles } from "@/styles/home/banner.style";
+import { Nunito_400Regular, Nunito_700Bold } from "@expo-google-fonts/nunito";
+import { Raleway_700Bold, useFonts } from "@expo-google-fonts/raleway";
+import { Image, View } from "react-native";
+import Swiper from "react-native-swiper";
 
 export default function HomeBannerSlider() {
   let [fontsLoaded, fontError] = useFonts({
@@ -17,7 +17,7 @@ export default function HomeBannerSlider() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingLeft: 0, paddingRight: 5 }]}>
       <Swiper
         dotStyle={styles.dot}
         activeDotStyle={styles.activeDot}

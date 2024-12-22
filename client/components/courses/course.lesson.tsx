@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from "react";
 import { Entypo, Feather } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function CourseLesson({
   courseDetails,
@@ -88,7 +88,9 @@ export default function CourseLesson({
                         >
                           <View style={styles.itemContainer}>
                             <View style={styles.itemContainerWrapper}>
-                              <View style={styles.itemTitleWrapper}>
+                              <View style={[styles.itemTitleWrapper,
+                              { borderColor: "red", borderWidth: 0, width: "70%", paddingRight: 10 }
+                              ]}>
                                 <Feather
                                   name="video"
                                   size={20}

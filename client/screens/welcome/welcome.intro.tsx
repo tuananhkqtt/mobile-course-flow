@@ -1,15 +1,15 @@
-import { View, Text, Image } from "react-native";
+import { onboardingSwiperData } from "@/constants/constans";
+import { commonStyles } from "@/styles/common/common.styles";
+import { styles } from "@/styles/onboarding/onboard";
 import {
   Nunito_400Regular,
   Nunito_600SemiBold,
 } from "@expo-google-fonts/nunito";
-import { useFonts, Raleway_700Bold } from "@expo-google-fonts/raleway";
+import { Raleway_700Bold, useFonts } from "@expo-google-fonts/raleway";
 import { LinearGradient } from "expo-linear-gradient";
-import AppIntroSlider from "react-native-app-intro-slider";
-import { onboardingSwiperData } from "@/constants/constans";
 import { router } from "expo-router";
-import { commonStyles } from "@/styles/common/common.styles";
-import { styles } from "@/styles/onboarding/onboard";
+import { Image, Text, View } from "react-native";
+import AppIntroSlider from "react-native-app-intro-slider";
 
 export default function WelcomeIntroScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -24,7 +24,7 @@ export default function WelcomeIntroScreen() {
 
   const renderItem = ({ item }: { item: onboardingSwiperDataType }) => (
     <LinearGradient
-      colors={["#E5ECF9", "F6F7F9", "#E8EEF9"]}
+      colors={["#A9F1DF", "#FFBBBB"]}
       style={{ flex: 1, paddingHorizontal: 16 }}
     >
       <View style={{ marginTop: 80 }}>

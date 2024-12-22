@@ -46,12 +46,13 @@ export default function AllCourses() {
   }
 
   return (
-    <View style={{ flex: 1, marginHorizontal: 16 }}>
+    <View style={{ flex: 1, paddingHorizontal: 10 }}>
       <View
         style={{
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
+          paddingHorizontal: 11
         }}
       >
         <Text

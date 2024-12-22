@@ -10,10 +10,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import CourseCard from "../cards/course.card";
+import CourseCard from '../cards/course.card';
 
 export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   const [value, setValue] = useState("");
@@ -88,7 +88,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   );
 
   return (
-    <View>
+    <View >
       <View style={styles.filteringContainer}>
         <View style={styles.searchContainer}>
           <TextInput
@@ -106,6 +106,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={{ paddingHorizontal: 10 }}>
         <FlatList
           data={filteredCourses}
@@ -115,6 +116,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
               ? renderCourseItem
               : ({ item }) => <CourseCard item={item} key={item._id} />
           }
+          contentContainerStyle={!homeScreen && { paddingBottom: 150 }}
         />
       </View>
       {!homeScreen && (
@@ -143,6 +145,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginHorizontal: 16,
+    paddingBottom: 10, paddingTop: 10
   },
 
   searchContainer: {
@@ -152,7 +155,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 5,
     paddingHorizontal: 10,
-    marginRight: 10,
+    marginRight: 5,
   },
 
   searchIconContainer: {

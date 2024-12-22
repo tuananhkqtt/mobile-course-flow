@@ -1,7 +1,6 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { AntDesign } from "@expo/vector-icons";
 import SearchInput from "@/components/common/search.input";
+import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView } from "react-native";
 
 export default function SearchScreen() {
   return (

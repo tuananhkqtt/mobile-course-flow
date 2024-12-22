@@ -1,11 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { Raleway_700Bold } from "@expo-google-fonts/raleway";
-import { useFonts } from "expo-font";
 import useUser from "@/hooks/auth/useUser";
+import { Raleway_700Bold } from "@expo-google-fonts/raleway";
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFonts } from "expo-font";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Header() {
   const [cartItems, setCartItems] = useState([]);
